@@ -1,0 +1,78 @@
+<%+header%>
+<script type="text/javascript" src="<%=resource%>/xhr.js"></script>
+<script>
+		
+	function applyc(btn)
+	{
+		//window.location.reload(true);
+		var iframe = document.getElementById('apply4');
+		iframe.src = iframe.src;
+	}
+	
+	function applys(btn)
+	{
+		document.getElementById("apply3").style.visibility="hidden";
+		document.getElementById("apply3").style.display = "none";
+		document.getElementById("apply1").style.visibility="visible";
+		document.getElementById("apply1").style.display = "block";
+		document.getElementById("apply2").style.visibility="visible";
+		document.getElementById("apply2").style.display = "block";
+	}
+</script>
+
+<form method="post" action="<%=REQUEST_URI%>">
+<div class="cbi-map" id="cbi-misc">
+<h2><a id="content" name="content">Browser Speed Test</a></h2>
+<div class="cbi-map-descr">A Speed Test using OpenSpeedTest that runs in the browser</div>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/luci-static/speed/css/iconmoon_splash.css">
+	<link rel="stylesheet" href="/luci-static/speed/css/splash.css">
+	<link rel="SHORTCUT ICON" href="/luci-static/speed/img/favicon.gif">
+	<link rel="icon" type="image/gif" href="/luci-static/speed/img/favicon.gif">
+</head>
+
+<body style="background-color: LightSteelBlue"  class='rooterSplash'>
+
+	<table align="left" border="0" id="apply3" >
+		<tr>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="" id="rooterItemss">
+				<a onclick="return applys(this)">
+					<div class="rooterItem" id="rooterItem1">
+						<div class="rooterItemTitle">
+							<i class='icon icon-cog'></i> Click to Start Speed Test
+						</div>
+					</div>
+				<a>
+				</div>
+			</td>
+		</tr>
+	</table>
+    
+    <a  style="visibility:hidden;display:none;" id="apply2"><iframe id="apply4" src="https://openspeedtest.com/Get-widget.php?Auto=1" width="700" height="500" style="border:2px solid black;" title="OpenSpeedTest"></iframe></a>
+    
+	<table id="apply1" border="0" style="visibility:hidden;display:none;" >
+		<tr>
+			<td align="left">
+				<div class="" id="rooterItemss">
+				<a onclick="return applyc(this)">
+					<div class="rooterItemsp" id="rooterItem1">
+						<div class="rooterItemTitle">
+							<i class='icon icon-cog'></i> Click to Test Again
+						</div>
+					</div>
+				<a>
+				</div>
+			</td>
+		</tr>
+ 	</table>
+	
+
+</body>
+</div>
+</form>
+<%+footer%>
