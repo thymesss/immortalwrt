@@ -27,7 +27,7 @@
 				document.getElementById('used').innerHTML="";
 				document.getElementById('mslots').innerHTML="";
 				document.getElementById('menb').checked=false;
-				document.getElementById('supported').innerHTML="SMS Not Supported/No Modem";
+				document.getElementById('supported').innerHTML="不支持信息/或无模块";
 			}
 			if ( ss == "1" )
 			{
@@ -37,15 +37,15 @@
 				document.getElementById('used').innerHTML="";
 				document.getElementById('mslots').innerHTML="";
 				document.getElementById('menb').checked=false;
-				document.getElementById('supported').innerHTML="Waiting to Read Messages";
+				document.getElementById('supported').innerHTML="等待阅读信息";
 			}
 			if ( ss == "3" )
 			{
-				document.getElementById('supported').innerHTML="Message Read Problem";
+				document.getElementById('supported').innerHTML="消息读取问题";
 			}
 			if ( ss == "2" )
 			{
-				document.getElementById('supported').innerHTML="Messages Present";
+				document.getElementById('supported').innerHTML="当前消息";
 				clearListBox("smsList");
 				document.getElementById('total').innerHTML=rv.max;
 				document.getElementById('used').innerHTML=rv.used;
@@ -75,7 +75,7 @@
 				}
 				if (rv.used == "0")
 				{
-					document.getElementById('supported').innerHTML="No Messages Present on SIM";
+					document.getElementById('supported').innerHTML="SIM卡上没有信息";
 				}
 				else
 				{
@@ -180,13 +180,13 @@
 		//document.getElementById('rding').innerHTML=s.length;
 		if ( s.length == 0 )
 		{
-			alert("You must enter a phone number!!");
+			alert("您必须输入一个电话号码!!");
 			return false;
 		}
 		s = s.trim();
 		if ( isNaN(s) == true )
 		{
-			alert("Invalid phone number!!");
+			alert("无效的电话号码!!");
 			return false;
 		}
 		var num = s.concat("                    ");
@@ -194,7 +194,7 @@
 		var t = document.getElementById("txtmessage").value;
 		if ( t.length == 0 )
 		{
-			alert("Message is blank!!");
+			alert("消息是空的!!");
 			return false;
 		}
 		if ( t.length > 160 )
@@ -202,8 +202,8 @@
 			t = t.substr(0, 160);
 		}
 		num = num.concat(t);
-		alert("SMS will be queued for processing.\nA status update will follow.");
-		document.getElementById("sstat").innerHTML="Sending Message. Please Wait";
+		alert("信息将排队等待处理,随后将更新发送状态。");
+		document.getElementById("sstat").innerHTML="信息发送中,请稍后...";
 		XHR.get('<%=luci.dispatcher.build_url("admin", "modem", "send_sms")%>',
 			{ set: num },
 			function(x, rv)
@@ -221,7 +221,7 @@
 		{
 			return false;
 		}
-		var r=confirm("Delete the selected message?");
+		var r=confirm("是否删除所选信息？?");
 		if (r==false)
   		{
   			return false;
@@ -231,7 +231,7 @@
 		dx = dx + 1;
 		clearListBox("smsList");
 		document.getElementById('message').style.color = "red";
-		document.getElementById('message').innerHTML="Message will be deleted. It may take some time before the list is updated.";
+		document.getElementById('message').innerHTML="信息将被删除。更新列表之前可能需要一些时间。";
 		XHR.get('<%=luci.dispatcher.build_url("admin", "modem", "del_sms")%>',
 			{ set: dx },
 			function()
@@ -248,15 +248,15 @@
 						document.getElementById('message').innerHTML="";
 						document.getElementById('total').innerHTML="";
 						document.getElementById('used').innerHTML="";
-						document.getElementById('supported').innerHTML="Waiting to Read Messages";
+						document.getElementById('supported').innerHTML="等待阅读信息";
 					}
 					if ( ss == "3" )
 					{
-						document.getElementById('supported').innerHTML="Message Read Problem";
+						document.getElementById('supported').innerHTML="信息读取出问题";
 					}
 					if ( ss == "2" )
 					{
-						document.getElementById('supported').innerHTML="Messages Present";
+						document.getElementById('supported').innerHTML="当前信息";
 						clearListBox("smsList");
 						document.getElementById('total').innerHTML=rv.max;
 						document.getElementById('used').innerHTML=rv.used;
@@ -393,28 +393,28 @@
 
 <form method="post" action="<%=REQUEST_URI%>">
 <div class="cbi-map" id="cbi-sms">
-<h2><a id="content" name="content">SMS Messaging</a></h2>
-<div class="cbi-map-descr">Send and Receive Text Messages Through Your Modem</div>
+<h2><a id="content" name="content">信息服务</a></h2>
+<div class="cbi-map-descr">通过模组发送和接收文字信息</div>
 <fieldset class="cbi-section" id="cbi-read">
-	<legend>Modem Information</legend>
+	<legend>模组信息</legend>
 	<table width="550"  border="0">
   	<tr>
     		<td width="40%"><ul id="supported"></ul></td>
     		<td width="17%"><strong id="conntype"></strong></td>
 		<td width="12%">
-			<input type="button" class="cbi-button cbi-button-apply" value="<%:Prev Modem%>" onclick="return modemtoggledn(this)" />
+			<input type="button" class="cbi-button cbi-button-apply" value="<%:上一个 模组%>" onclick="return modemtoggledn(this)" />
 		</td>
 		<td width="31%">
-			<input type="button" class="cbi-button cbi-button-apply" value="<%:Next Modem%>" onclick="return modemtoggle(this)" />
+			<input type="button" class="cbi-button cbi-button-apply" value="<%:下一个 模组%>" onclick="return modemtoggle(this)" />
 		</td>
   	</tr>
 	</table>
-	<legend>Received Messages</legend>
+	<legend>收到的信息</legend>
 
 	<table width="550"  border="0">
   	<tr>
-    		<td width="18%"><div align="center"><strong><u>Total SIM Message Slots</u></strong></div></td>
-    		<td width="18%"><div align="center"><strong><u>Used SIM Message Slots</u></strong></div></td>
+    		<td width="18%"><div align="center"><strong><u>SIM信息总数</u></strong></div></td>
+    		<td width="18%"><div align="center"><strong><u>已用SIM信息</u></strong></div></td>
 		<td width="34%">&nbsp;</td>
   	</tr>
   	<tr>
@@ -427,11 +427,11 @@
 	<table width="550"  border="0">
   	<tr>
 		<td width="3%">&nbsp;</td>
-		<td width="20%"><div align="left">Enable SMS transfer from modem to SIM</div></td>
+		<td width="20%"><div align="left">开启从模组到SIM卡的SMS传输</div></td>
 		<td width="8%">
 			<input type="checkbox" id="menb" onclick="memenable(this)" />
 		</td>
-		<td width="16%"><div align="left"><strong><u>Unread SMS count on modem</u></strong></div></td>
+		<td width="16%"><div align="left"><strong><u>模块上的消息未读计数</u></strong></div></td>
 		<td width="34%">&nbsp;</td>
 	</tr>
   	<tr>
@@ -445,11 +445,11 @@
 
 	<table width="700"  border="0">
 	<tr>
-		<td width="4%"><div align="center"><strong><u>Read</u></strong></div></td>
-		<td width="18%"><div align="left"><strong><u>Sender</u></strong></div></td>
-		<td width="8%"><div align="left"><strong><u>Date</u></strong></div></td>
-		<td width="11%"><div align="left"><strong><u>Time</u></strong></div></td>
-		<td width="35%"><div align="left"><strong><u>Message</u></strong></div></td>
+		<td width="4%"><div align="center"><strong><u>读取</u></strong></div></td>
+		<td width="18%"><div align="left"><strong><u>发件人</u></strong></div></td>
+		<td width="8%"><div align="left"><strong><u>日期</u></strong></div></td>
+		<td width="11%"><div align="left"><strong><u>时间</u></strong></div></td>
+		<td width="35%"><div align="left"><strong><u>消息</u></strong></div></td>
 		<td width="24%"><div align="left"> </div></td>
 
 	</tr>
@@ -466,7 +466,7 @@
 
 	<table width="550"  border="0">
   	<tr>
-    		<td width="15%"><div align="left"><strong>Message :</strong></div></td>
+    		<td width="15%"><div align="left"><strong>消息 :</strong></div></td>
     		<td width="70%"><ul id="message"></ul></td>
     		<td width="15%">&nbsp;</td>
   	</tr>
@@ -474,18 +474,18 @@
 
 	<table width="550"  border="0">
 	<tr>
-    		<td width="17%"><input type="button" id="delbtn" class="cbi-button cbi-button-apply" value="<%:Delete Message%>" onclick="return delsms()" /></td>
-		<td width="17%"><input type="button" id="replybtn" class="cbi-button cbi-button-apply" value="<%:Reply to Message%>" onclick="return replysms()" /></td>
-		<td width="17%"><input type="button" id="newbtn" class="cbi-button cbi-button-apply" value="<%:New Message%>" onclick="return newsms()" /></td>
+    		<td width="17%"><input type="button" id="delbtn" class="cbi-button cbi-button-apply" value="<%:删除信息%>" onclick="return delsms()" /></td>
+		<td width="17%"><input type="button" id="replybtn" class="cbi-button cbi-button-apply" value="<%:回复信息%>" onclick="return replysms()" /></td>
+		<td width="17%"><input type="button" id="newbtn" class="cbi-button cbi-button-apply" value="<%:新信息%>" onclick="return newsms()" /></td>
     		<td width="49%">&nbsp;</td>
   	</tr>
 	</table>
 
-	<legend id="sendtitle" style="display:block;">Send Messages</legend>
+	<legend id="sendtitle" style="display:block;">发送信息</legend>
 
 	<table id="sendmsg" width="600"  border="0" style="display:table;">
   	<tr>
-    		<td width="15%"><div align="left"><strong>Send To :</strong></div></td>
+    		<td width="15%"><div align="left"><strong>收件人 :</strong></div></td>
     		<td width="70%"><input name="sendto" id="sendto" maxlength="20"></input></td>
     		<td width="15%">&nbsp;</td>
   	</tr>
@@ -501,7 +501,7 @@
 
 	<table id="sendbtn" width="550"  border="0" style="display:table;">
 	<tr>
-    		<td width="17%"><input type="button" id="sendbtn" class="cbi-button cbi-button-apply" value="<%:Send%>" onclick="return sendsms()" /></td>
+    		<td width="17%"><input type="button" id="sendbtn" class="cbi-button cbi-button-apply" value="<%:发送%>" onclick="return sendsms()" /></td>
 		<td width="13%">&nbsp;</td>
     		<td width="70%">&nbsp;</td>
   	</tr>
@@ -509,7 +509,7 @@
 
 	<table width="550"  border="0">
   	<tr>
-    		<td width="15%"><div align="left"><strong>Sending Status :</strong></div></td>
+    		<td width="15%"><div align="left"><strong>发送状态 :</strong></div></td>
     		<td width="70%"><ul style="color:red" id="sstat"></ul></td>
     		<td width="15%">&nbsp;</td>
   	</tr>

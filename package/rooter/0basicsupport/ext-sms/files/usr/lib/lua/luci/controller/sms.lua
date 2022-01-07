@@ -4,7 +4,7 @@ function index()
 	local fs = require "nixio.fs"
 	if not fs.stat("/etc/nosms") then
 		local page
-		page = entry({"admin", "modem", "sms"}, template("rooter/sms"), "SMS Messaging", 35)
+		page = entry({"admin", "modem", "sms"}, template("rooter/sms"), "信息功能", 35)
 		page.dependent = true
 	end
 

@@ -1,15 +1,15 @@
 module("luci.controller.admin.modem", package.seeall) 
 
 function index()
-	entry({"admin", "modem"}, firstchild(), "Modem", 25).dependent=false
+	entry({"admin", "modem"}, firstchild(), "模组管理", 25).dependent=false
 --	entry({"admin", "modem", "cinfo"}, cbi("rooter/connection", {autoapply=true}), "Connection Info", 10)
-	entry({"admin", "modem", "prof"}, cbi("rooter/profiles"), "Connection Profile", 2)
+--	entry({"admin", "modem", "prof"}, cbi("rooter/profiles"), "Connection Profile", 2)
 --	entry({"admin", "modem", "conmon"}, cbi("rooter/connmonitor"), "Connection Monitoring", 20)
-	entry({"admin", "modem", "nets"}, template("rooter/net_status"), "Network Status", 30)
-	entry({"admin", "modem", "debug"}, template("rooter/debug"), "Debug Information", 50)
-	entry({"admin", "modem", "cust"}, cbi("rooter/customize"), "Custom Modem Ports", 55)
-	entry({"admin", "modem", "log"}, template("rooter/log"), "Connection Log", 60)
-	entry({"admin", "modem", "misc"}, template("rooter/misc"), "Miscellaneous", 40)
+	entry({"admin", "modem", "nets"}, template("rooter/net_status"), "基站信息/信号状态", 30)
+	entry({"admin", "modem", "debug"}, template("rooter/debug"), "调试信息", 50)
+--	entry({"admin", "modem", "cust"}, cbi("rooter/customize"), "Custom Modem Ports", 55)
+	entry({"admin", "modem", "log"}, template("rooter/log"), "连接日志", 60)
+	entry({"admin", "modem", "misc"}, template("rooter/misc"), "模组锁频/切换模式选项", 40)
 	
 	entry({"admin", "modem", "block"},
 		template("rooter/bandlock"))
@@ -451,9 +451,9 @@ function action_get_csq()
 	end
 
 	if not nixio.fs.access("/etc/netspeed") then
-		rv["crate"] = "Fast (updated every 10 seconds)"
+		rv["crate"] = "快速 (每10秒更新一次)"
 	else
-		rv["crate"] = "Slow (updated every 60 seconds)"
+		rv["crate"] = "缓慢 (每60秒更新一次)"
 	end
 
 	stat = "/tmp/msimdata" .. modnum
