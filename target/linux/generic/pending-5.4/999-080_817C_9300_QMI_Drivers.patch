@@ -14,11 +14,10 @@
  	{QMI_FIXED_INTF(0x05c6, 0x7001, 1)},
 --- a/drivers/usb/serial/option.c
 +++ b/drivers/usb/serial/option.c
-@@ -382,7 +382,16 @@ static void option_instat_callback(struc
-  * Mobidata, etc sell under their own brand names.
+@@ -387,6 +387,17 @@
   */
  #define LONGCHEER_VENDOR_ID			0x1c9e
--
+ 
 +/*************Add for LongSung U9300 LTE modem*********/
 +#define LONGSUNG_VENDOR_ID         0x1c9e
 +#define LONGSUNG_U9300_PRODUCT_ID         0x9b3c
@@ -29,14 +28,15 @@
 +#define LONGSUNG_U8300_PRODUCT_ID         0x9b05
 + 
 +/******************************************************/
++
  /* 4G Systems products */
  /* This is the 4G XS Stick W14 a.k.a. Mobilcom Debitel Surf-Stick *
   * It seems to contain a Qualcomm QSC6240/6290 chipset            */
-@@ -575,6 +584,13 @@ static void option_instat_callback(struc
+@@ -585,6 +596,13 @@
  
  
  static const struct usb_device_id option_ids[] = {
-+       /***************Add for LongSung U9300 LTE modem****************/
++        /***************Add for LongSung U9300 LTE modem****************/
 +	{ USB_DEVICE(LONGSUNG_VENDOR_ID, LONGSUNG_U9300_PRODUCT_ID) },
 +	/***************************************************************/
 +        /***************Add for LongSung U8300 LTE modem****************/
@@ -46,10 +46,16 @@
  	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_COLT) },
  	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_RICOLA) },
  	{ USB_DEVICE(OPTION_VENDOR_ID, OPTION_PRODUCT_RICOLA_LIGHT) },
-@@ -2100,6 +2116,40 @@ static int option_probe(struct usb_seria
+@@ -2165,7 +2183,48 @@
+ 	/* Never bind to the CD-Rom emulation interface	*/
  	if (iface_desc->bInterfaceClass == USB_CLASS_MASS_STORAGE)
  		return -ENODEV;
- 
++ if(serial->dev->descriptor.idVendor == 0x1c9e &&
++    serial->dev->descriptor.idProduct == 0x9b3c&&
++    serial->interface->cur_altsetting->desc.bInterfaceNumber == 0){
++     printk("GZZ Discover the 0th interface for 9300 ndis\n");
++    return -ENODEV;
++     }
 + if(serial->dev->descriptor.idVendor == 0x1c9e &&
 +    serial->dev->descriptor.idProduct == 0x9b3c&&
 +    serial->interface->cur_altsetting->desc.bInterfaceNumber == 0){
@@ -84,6 +90,8 @@
 +   }
 +/***************************************************************/
 +
+ 
++	
  	/*
  	 * Don't bind reserved interfaces (like network ones) which often have
  	 * the same class/subclass/protocol as the serial interfaces.  Look at
