@@ -1,0 +1,58 @@
+--- a/drivers/usb/serial/usb_wwan.c
++++ b/drivers/usb/serial/usb_wwan.c
+@@ -476,7 +476,19 @@
+ 	usb_fill_bulk_urb(urb, serial->dev,
+ 			  usb_sndbulkpipe(serial->dev, endpoint) | dir,
+ 			  buf, len, callback, ctx);
+-
++			  
++#if 1 //Added by Quectel for Zero Packet
++	if (dir == USB_DIR_OUT) {
++		if (serial->dev->descriptor.idVendor == cpu_to_le16(0x05C6) && serial->dev->descriptor.idProduct == cpu_to_le16(0x9090))
++			urb->transfer_flags |= URB_ZERO_PACKET;
++		if (serial->dev->descriptor.idVendor == cpu_to_le16(0x05C6) && serial->dev->descriptor.idProduct == cpu_to_le16(0x9003))
++			urb->transfer_flags |= URB_ZERO_PACKET;
++		if (serial->dev->descriptor.idVendor == cpu_to_le16(0x05C6) && serial->dev->descriptor.idProduct == cpu_to_le16(0x9215))
++			urb->transfer_flags |= URB_ZERO_PACKET;
++		if (serial->dev->descriptor.idVendor == cpu_to_le16(0x2C7C))
++			urb->transfer_flags |= URB_ZERO_PACKET;
++	}
++#endif
+ 	if (intfdata->use_zlp && dir == USB_DIR_OUT)
+ 		urb->transfer_flags |= URB_ZERO_PACKET;
+
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2187,6 +2187,9 @@
+ #ifdef CONFIG_PM
+ 	.suspend           = usb_wwan_suspend,
+ 	.resume            = usb_wwan_resume,
++#if 1 //Added by Quectel
++	.reset_resume = usb_wwan_resume,
++#endif
+ #endif
+ };
+ 
+@@ -2211,9 +2214,7 @@
+ 				&serial->interface->cur_altsetting->desc;
+ 	unsigned long device_flags = id->driver_info;
+ 
+-	/* Never bind to the CD-Rom emulation interface	*/
+-	if (iface_desc->bInterfaceClass == USB_CLASS_MASS_STORAGE)
+-		return -ENODEV;
++	
+  if(serial->dev->descriptor.idVendor == 0x1c9e &&
+     serial->dev->descriptor.idProduct == 0x9b3c&&
+     serial->interface->cur_altsetting->desc.bInterfaceNumber == 0){
+@@ -2254,7 +2255,9 @@
+    }
+ /***************************************************************/
+ 
+-
++/* Never bind to the CD-Rom emulation interface	*/
++	if (iface_desc->bInterfaceClass == USB_CLASS_MASS_STORAGE)
++		return -ENODEV;
+ 	
+ 	/*
+ 	 * Don't bind reserved interfaces (like network ones) which often have
+ 
