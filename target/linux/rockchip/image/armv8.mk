@@ -32,6 +32,16 @@ define Device/friendlyarm_nanopi-r4s
 endef
 TARGET_DEVICES += friendlyarm_nanopi-r4s
 
+define Device/bozz-sw799a
+  DEVICE_VENDOR := bozz
+  DEVICE_MODEL := sw799a
+  SOC := rk3399
+  UBOOT_DEVICE_NAME := bozz-sw799a-rk3399
+  IMAGE/sysupgrade.img.gz := boot-common | boot-script nanopi-r4s | pine64-bin | gzip | append-metadata
+  DEVICE_PACKAGES := kmod-r8168 kmod-rtl8821cu -urngd
+endef
+TARGET_DEVICES += bozz-sw799a
+
 define Device/pine64_rockpro64
   DEVICE_VENDOR := Pine64
   DEVICE_MODEL := RockPro64
