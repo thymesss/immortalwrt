@@ -1,0 +1,51 @@
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -507,6 +507,11 @@
+ #define YUGA_PRODUCT_CLM800			0x3605
+ #define YUGA_PRODUCT_CLM900			0x3606
+ 
++#define FIBOCOM_ VENDOR_ID 0x2CB7
++#define FIBOCOM_PRODUCT_FG650_ECM 0x0A04
++#define FIBOCOM_ PRODUCT_FG650_NCM 0x0A05
++#define FIBOCOM_ PRODUCT_FG650_RNDIS 0x0A06
++
+ #define YUGA_PRODUCT_CLU718			0x3607
+ #define YUGA_PRODUCT_CLU716			0x3608
+ #define YUGA_PRODUCT_CLU728			0x3609
+@@ -596,6 +601,11 @@
+ 
+ 
+ static const struct usb_device_id option_ids[] = {
++#if 1
++	{USB_DEVICE(FIBOCOM_ VENDOR_ID,FIBOCOM_PRODUCT_FG650_ECM)},
++	{USB_DEVICE(FIBOCOM_ VENDOR_ID,FIBOCOM_ PRODUCT_FG650_NCM)},
++	{USB_DEVICE(FIBOCOM_ VENDOR_ID,FIBOCOM_ PRODUCT_FG650_RNDIS)},
++#endif
+         /***************Add for LongSung U9300 LTE modem****************/
+ 	{ USB_DEVICE(LONGSUNG_VENDOR_ID, LONGSUNG_U9300_PRODUCT_ID) },
+ 	/***************************************************************/
+@@ -2241,7 +2251,23 @@
+ 	 return -ENODEV;
+    }
+ /***************************************************************/
+-
++#if 1
++ if (serial->dev->descriptor.idVendor == cpu_to_le16(FIBOCOM_ VENDOR_ID) &&
++ serial->dev->descriptor.idProduct == cpu_to_le16(FIBOCOM_PRODUCT_FG650_ECM) &&
++ serial->interface->cur_altsetting->desc.bInterfaceNumber <= 1) {
++ printk(KERN_INFO “Discover the 4th interface for fibocom\n”);
++ return -ENODEV;}
++ if (serial->dev->descriptor.idVendor == cpu_to_le16(FIBOCOM_ VENDOR_ID) &&
++ serial->dev->descriptor.idProduct == cpu_to_le16(FIBOCOM_ PRODUCT_FG650_NCM) &&
++ serial->interface->cur_altsetting->desc.bInterfaceNumber <= 1) {
++printk(KERN_INFO “Discover the 4th interface for fibocom\n”);
++ return -ENODEV;}
++ if (serial->dev->descriptor.idVendor == cpu_to_le16(FIBOCOM_ VENDOR_ID) &&
++ serial->dev->descriptor.idProduct == cpu_to_le16(FIBOCOM_ PRODUCT_FG650_RNDIS) &&
++ serial->interface->cur_altsetting->desc.bInterfaceNumber <= 1) {
++ printk(KERN_INFO “Discover the 4th interface for fibocom\n”);
++ return -ENODEV;}
++#endif
+ /* Never bind to the CD-Rom emulation interface	*/
+ 	if (iface_desc->bInterfaceClass == USB_CLASS_MASS_STORAGE)
+ 		return -ENODEV;
